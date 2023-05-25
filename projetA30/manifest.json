@@ -1,0 +1,23 @@
+{
+  "name": "Dish showfest",
+  "short_name": "Dish showfest",
+  "start_url": "/projetA30/",
+  "display": "standalone",
+  "background_color": "blue",
+  "theme_color": "blue",
+  "orientation": "portrait-primary",
+  "description": "App to show the dishes of the showfest",
+  "icons": [
+    {
+      "src": "resources/android-chrome-192x192.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "resources/android-chrome-512x512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ]
+}
