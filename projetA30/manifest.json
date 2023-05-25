@@ -1,7 +1,7 @@
 {
   "name": "Dish showfest",
   "short_name": "Dish showfest",
-  "start_url": "/projetA30/",
+  "start_url": "index.html",
   "display": "standalone",
   "background_color": "blue",
   "theme_color": "blue",

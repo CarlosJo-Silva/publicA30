@@ -3,10 +3,12 @@ $().ready(function () {
     wrk = new Wrk();
 
 });
+
 var image = "";
 
 class Ctrl {
     constructor() {
+
         if ("serviceWorker" in navigator) {
             navigator.serviceWorker.register("../../projetA30/serviceWorker.js")
 
@@ -54,13 +56,17 @@ class Ctrl {
     }
 
     getUserDish() {
+        var loading = $('<div class="spinner-border text-primary" role="status"></div>');
+        $('#loadingContainer').append(loading);
         wrk.getUserDishes(this.successUserDish, this.errorUserDish);
+
+
+
     }
 
     successUserDish(data) {
         $('#dataContainer').empty();
-        console.log(data);
-
+        $('#loadingContainer').empty();
         data.records.forEach(function (item) {
             console.log(item.data.firstName);
             console.log(item.data.lastName);
@@ -88,15 +94,19 @@ class Ctrl {
     }
 
     errorUserDish() {
+        $('#loadingContainer').empty();
         alert("Error, couldn't retrieve the user's dishes");
         return;
 
     }
     getRandomRecipe() {
+        var loading = $('<div class="spinner-border text-primary" role="status"></div>');
+        $('#loadingContainer').append(loading);
         wrk.getRandomRecipe(this.successRandomDish, this.errorRandomDish);
     }
     successRandomDish(data) {
         $('#dataContainer').empty();
+        $('#loadingContainer').empty();
         console.log(data);
 
         var recipe = data.meals[0];
@@ -137,6 +147,7 @@ class Ctrl {
         $('#dataContainer').append(card);
     }
     errorRandomDish() {
+        $('#loadingContainer').empty();
         alert("Error, couldn't retrieve the random dish");
         return;
     }
