@@ -1,26 +1,37 @@
 $().ready(function () {
 });
+var token = "";
+var collectionId = "";
+const timeToGetApiKeys = 100;
 
 class Wrk {
     constructor() {
-
     }
 
+    getApiKeys() {
+        $.ajax({
+            url: 'keys.php',
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                token = data.token;
+                collectionId = data.collectionId;
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    }
 
-    showPosition(position, callback) {
+    showPosition(position, successCallback, errorCallback) {
         var latitude = position.coords.latitude;
         var longitude = position.coords.longitude;
         $.ajax({
             url: `https://geocode.maps.co/reverse?lat=${latitude}&lon=${longitude}`,
             method: 'GET',
             dataType: 'json',
-            success: function (data) {
-                
-                callback(data);
-            },
-            error: function (error) {
-                alert("Error: couldn't get your location");
-            }
+            success: successCallback,
+            error: errorCallback
         });
     }
 
@@ -34,16 +45,18 @@ class Wrk {
 
     }
 
-    sendDish(firstname, lastname, dishname, location, img64) {
+    sendDish(firstName, lastName, dishName, location, img64, successCallback, errorCallback) {
+        this.getApiKeys();
 
+        setTimeout(function () {
 
             var headers = new Headers();
             headers.append("Content-Type", "application/x-www-form-urlencoded");
-            headers.append("x-collection-access-token", "9c70be1b-5e9c-4f4e-b451-46daf3ffd9dd");
+            headers.append("x-collection-access-token", token);
 
             var urlencoded = new URLSearchParams();
-            urlencoded.append("jsonData", `{"firstName": "${firstname}", "lastName": "${lastname}", "dishName": "${dishname}", "location": "${location}", "photo": "${img64}"}`);
-            urlencoded.append("collectionId", "fb589799-c4d3-4995-8dfd-4bb4757fdb9e");
+            urlencoded.append("jsonData", `{"firstName": "${firstName}", "lastName": "${lastName}", "dishName": "${dishName}", "location": "${location}", "photo": "${img64}"}`);
+            urlencoded.append("collectionId", collectionId);
 
             var requestOptions = {
                 method: 'POST',
@@ -55,37 +68,39 @@ class Wrk {
             fetch("https://api.myjson.online/v1/records", requestOptions)
                 .then(response => response.json())
                 .then(result => {
-                    setTimeout(function() {
-                        alert("Your dish has been registered!");
-                    }, 3000);
-                }
-
+                        successCallback();
+                    }
                 )
-                .catch(error => alert("error : couldn't register your dish"));
-
+                .catch(error => errorCallback());
+        }, timeToGetApiKeys);
 
 
     }
+
     getUserDishes(successCallback, errorCallback) {
-        var myHeaders = new Headers();
-        myHeaders.append("x-collection-access-token", "9c70be1b-5e9c-4f4e-b451-46daf3ffd9dd");
+        this.getApiKeys();
+        setTimeout(function () {
+            var myHeaders = new Headers();
+            myHeaders.append("x-collection-access-token", token);
 
-        var requestOptions = {
-            method: 'GET',
-            headers: myHeaders,
-            redirect: 'follow'
-        };
+            var requestOptions = {
+                method: 'GET',
+                headers: myHeaders,
+                redirect: 'follow'
+            };
+            fetch("https://api.myjson.online/v1/collections/" + collectionId + "/records", requestOptions)
+                .then(response => response.json())
+                .then(result => {
+                    successCallback(result);
 
-        fetch("https://api.myjson.online/v1/collections/fb589799-c4d3-4995-8dfd-4bb4757fdb9e/records", requestOptions)
-            .then(response => response.json())
-            .then(result => {
-                successCallback(result);
-            })
-            .catch(error => {
-                console.log('error', error);
-                errorCallback("error:", error);
-            });
+                })
+                .catch(error => {
+                    errorCallback(error);
+
+                });
+        }, timeToGetApiKeys);
     }
+
     getRandomRecipe(successCallback, errorCallback) {
         $.ajax({
             url: 'https://www.themealdb.com/api/json/v1/1/random.php',
