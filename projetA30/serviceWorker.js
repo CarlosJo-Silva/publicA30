@@ -3,7 +3,6 @@ const assets = [
     "/",
     "index.html"
 ];
-
 self.addEventListener('install', function(event) {
     console.log("wrk ok installer");
     event.waitUntil(
@@ -41,13 +40,13 @@ self.addEventListener('fetch', function(event) {
 
 
 self.addEventListener('activate', function(event) {
-    var cacheWhitelist = [dishCache]; // Modification : Utilisation d'un tableau pour cacheWhitelist
+    var cacheWhitelist = [dishCache];
     event.waitUntil(
         caches.keys().then(function(cacheNames) {
             return Promise.all(
                 cacheNames.map(function(cacheName) {
                     console.log(cacheWhitelist);
-                    if (cacheWhitelist.indexOf(cacheName) === -1) { // Modification : Vérification du cacheName dans le tableau cacheWhitelist
+                    if (cacheWhitelist.indexOf(cacheName) === -1) {
                         return caches.delete(cacheName);
                     }
                 })
