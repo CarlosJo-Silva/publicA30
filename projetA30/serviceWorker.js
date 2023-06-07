@@ -1,7 +1,8 @@
 const dishCache = "cache-v1";
 const assets = [
     "/",
-    "index.html"
+    "index.html",
+
 ];
 self.addEventListener('install', function(event) {
     console.log("wrk ok installer");
@@ -11,21 +12,18 @@ self.addEventListener('install', function(event) {
         })
     );
 });
-
 self.addEventListener('fetch', function(event) {
     event.respondWith(
         caches.match(event.request).then(function(response) {
             if (response) {
                 return response;
+
             }
-
             var fetchRequest = event.request.clone();
-
             return fetch(fetchRequest).then(function(response) {
                 if (!response || response.status !== 200 || response.type !== 'basic') {
                     return response;
                 }
-
                 var responseToCache = response.clone();
 
                 caches.open(dishCache).then(function(cache) {
@@ -37,8 +35,6 @@ self.addEventListener('fetch', function(event) {
         })
     );
 });
-
-
 self.addEventListener('activate', function(event) {
     var cacheWhitelist = [dishCache];
     event.waitUntil(
