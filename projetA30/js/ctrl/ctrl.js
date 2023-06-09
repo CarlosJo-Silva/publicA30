@@ -38,7 +38,12 @@ class Ctrl {
             var dishName = $("#dishName").val();
             var location = $("#location").val();
             var fileInput = document.getElementById("photo");
-            wrk.processImageIn64(fileInput.files[0], (img64) => {
+            var file = fileInput.files[0];
+            if (file && file.size > 3.5 * 1024 * 1024) {
+                alert("File size exceeds the limit of 3.5MB.");
+                return;
+            }
+            wrk.processImageIn64(file, (img64) => {
                 var img64 = img64;
                 wrk.sendDish(firstName, lastName, dishName, location, img64, this.successSendFish, this.errorSendDish);
                 var loading = $('<div class="spinner-border text-secondary" role="status"></div>');

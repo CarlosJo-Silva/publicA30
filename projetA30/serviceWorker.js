@@ -1,8 +1,20 @@
 const dishCache = "cache-v1";
 const assets = [
-    "/",
+    "/projetA30/",
     "index.html",
-
+    "stylesheets/main.css",
+    "js/ctrl/ctrl.js",
+    "js/wrk/wrk.js",
+    "resources/android-chrome-192x192.png",
+    "resources/android-chrome-512x512.png",
+    "resources/apple-touch-icon.png",
+    "resources/favicon-16x16.png",
+    "resources/favicon-32x32.png",
+    "resources/mstile-150x150.png",
+    "resources/safari-pinned-tab.svg",
+    "favicon.ico",
+    "serviceWorker.js",
+    "https://code.jquery.com/jquery-3.6.4.min.js",
 ];
 self.addEventListener('install', function(event) {
     console.log("wrk ok installer");

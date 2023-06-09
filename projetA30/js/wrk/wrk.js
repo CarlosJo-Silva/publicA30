@@ -1,11 +1,8 @@
 $().ready(function () {
 });
-
-
     class Wrk {
         constructor() {
         }
-
         getApiKeys(callback) {
             $.ajax({
                 url: 'keys.php',
@@ -71,8 +68,6 @@ $().ready(function () {
 
         getUserDishes(successCallback, errorCallback) {
             this.getApiKeys(function (data) {
-
-            console.log(data);
                 var myHeaders = new Headers();
                 myHeaders.append("x-collection-access-token", data.token);
 
