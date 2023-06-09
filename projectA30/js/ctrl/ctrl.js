@@ -8,7 +8,7 @@ class Ctrl {
     constructor() {
 
         if ("serviceWorker" in navigator) {
-            navigator.serviceWorker.register("../../projetA30/serviceWorker.js")
+            navigator.serviceWorker.register("../../projectA30/serviceWorker.js")
 
         }
     }

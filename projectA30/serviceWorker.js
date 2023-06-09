@@ -1,6 +1,6 @@
 const dishCache = "cache-v1";
 const assets = [
-    "/projetA30/",
+    "/projectA30/",
     "index.html",
     "stylesheets/main.css",
     "js/ctrl/ctrl.js",
