@@ -16,29 +16,29 @@ const assets = [
     "serviceWorker.js",
     "https://code.jquery.com/jquery-3.6.4.min.js",
 ];
-self.addEventListener('install', function(event) {
+self.addEventListener('install', event => {
     console.log("wrk ok installer");
     event.waitUntil(
-        caches.open(dishCache).then(function(cache) {
+        caches.open(dishCache).then(cache => {
             return cache.addAll(assets);
         })
     );
 });
-self.addEventListener('fetch', function(event) {
+self.addEventListener('fetch',  event => {
     event.respondWith(
-        caches.match(event.request).then(function(response) {
+        caches.match(event.request).then( response => {
             if (response) {
                 return response;
 
             }
             var fetchRequest = event.request.clone();
-            return fetch(fetchRequest).then(function(response) {
+            return fetch(fetchRequest).then( response => {
                 if (!response || response.status !== 200 || response.type !== 'basic') {
                     return response;
                 }
                 var responseToCache = response.clone();
 
-                caches.open(dishCache).then(function(cache) {
+                caches.open(dishCache).then( cache => {
                     cache.put(event.request, responseToCache);
                 });
 
@@ -47,12 +47,12 @@ self.addEventListener('fetch', function(event) {
         })
     );
 });
-self.addEventListener('activate', function(event) {
+self.addEventListener('activate',  event => {
     var cacheWhitelist = [dishCache];
     event.waitUntil(
-        caches.keys().then(function(cacheNames) {
+        caches.keys().then( cacheNames=> {
             return Promise.all(
-                cacheNames.map(function(cacheName) {
+                cacheNames.map( cacheName => {
                     console.log(cacheWhitelist);
                     if (cacheWhitelist.indexOf(cacheName) === -1) {
                         return caches.delete(cacheName);
