@@ -1,3 +1,9 @@
+/*
+Author : Carlos Silva
+Version : 1.0
+Date : 16.06.2023
+Purpose : Project A30's service worker
+ */
 const dishCache = "cache-v1";
 const assets = [
     "/projectA30/",
@@ -16,15 +22,24 @@ const assets = [
     "serviceWorker.js",
     "https://code.jquery.com/jquery-3.6.4.min.js",
 ];
-self.addEventListener('install', event => {
-    console.log("wrk ok installer");
+/**
+ * Event listener for the 'install' event.
+ * It caches the specified assets when the service worker is installed.
+ */
+self.addEventListener('install', event =>  {
+    console.log("Service worker installed.");
     event.waitUntil(
         caches.open(dishCache).then(cache => {
             return cache.addAll(assets);
         })
     );
 });
-self.addEventListener('fetch',  event => {
+/**
+ * Event listener for the 'fetch' event.
+ * It intercepts fetch requests and serves cached responses if available,
+ * otherwise, it fetches the request and caches the response.
+ */
+self.addEventListener('fetch',  event =>  {
     event.respondWith(
         caches.match(event.request).then( response => {
             if (response) {
@@ -41,13 +56,17 @@ self.addEventListener('fetch',  event => {
                 caches.open(dishCache).then( cache => {
                     cache.put(event.request, responseToCache);
                 });
-
                 return response;
             });
         })
     );
 });
-self.addEventListener('activate',  event => {
+/**
+ * Event listener for the 'activate' event.
+ * It removes outdated caches and keeps the specified cache intact.
+ */
+self.addEventListener('activate',  event =>  {
+    console.log("Service worker activated.");
     var cacheWhitelist = [dishCache];
     event.waitUntil(
         caches.keys().then( cacheNames=> {

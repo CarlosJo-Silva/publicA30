@@ -1,10 +1,18 @@
+/*
+Author : Carlos Silva
+Version : 1.0
+Date : 16.06.2023
+Purpose : Project A30's Ctrl
+ */
 $().ready(function () {
     window.ctrl = new Ctrl();
     wrk = new Wrk();
-
 });
 
 class Ctrl {
+    /**
+     * Constructor of the class Ctrl. It registers the service-worker.
+     */
     constructor() {
 
         if ("serviceWorker" in navigator) {
@@ -13,6 +21,11 @@ class Ctrl {
         }
     }
 
+    /**
+     * Retrieves the user's location.
+     * If successful, it calls showPosition() from the class Wrk that will display the user's location.
+     * If unsuccessful, displays an error message.
+     */
     getLocation() {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition((position) => {
@@ -28,8 +41,14 @@ class Ctrl {
         }
     }
 
+    /**
+     * Registers a dish. It checks if all the fields are filled and if the file size is less than 3.5MBy.
+     * If all the fields are filled and the file size is less than 3.5MB, it calls processImageIn64() from the class Wrk.
+     * After processing the image, we send the dish to the Wrk, and it displays a loading spinner.
+     * If the image is too big and / or the fields are not filled, it displays an error message.
+     */
     register() {
-        if ($("#firstName").val() == "" || $("#lastName") == "" || $("#dishName") == "" || $("#location") == "" || $("#photo") == "") {
+        if ($("#firstName").val() == "" || $("#lastName").val() == "" || $("#dishName").val() == "" || $("#location").val() == "" || $("#photo").val() == "") {
             alert("Fill all the fields.");
             return;
         } else {
@@ -53,18 +72,33 @@ class Ctrl {
             });
         }
     }
+
+    /**
+     * Display a success message after sending a user dish.
+     * After displaying the message, it empties the fields, empties the loading container and collapses the form.
+     */
     successSendFish() {
         alert("Dish successfully registered.");
         ctrl.emptyFields();
         $('#loadingContainer').empty();
         $("#collapseForm").collapse('hide');
     }
+
+    /**
+     * Empties the loading container first, then it displays a new loading spinner and calls getUserDishes() from the class Wrk.
+     */
     getUserDish() {
+        $('#loadingContainer').empty();
         var loading = $('<div class="spinner-border text-success" role="status"></div>');
         $('#loadingContainer').append(loading);
         wrk.getUserDishes(this.successUserDish, this.errorUserDish);
     }
 
+    /**
+     * Create cards with the user's dishes informations and displays it in the data container.
+     * It empties the dataContainer and the loadingContainer first to display the cards.
+     * @param  data - The data containing the user's dishes.
+     */
     successUserDish(data) {
         $('#dataContainer').empty();
         $('#loadingContainer').empty();
@@ -87,6 +121,9 @@ class Ctrl {
         });
     }
 
+    /**
+     * Empty all the form fields.
+     */
     emptyFields() {
         $("#firstName").val("");
         $("#lastName").val("");
@@ -95,12 +132,22 @@ class Ctrl {
         $("#photo").val("");
     }
 
+    /**
+     * Gets a random recipe from the API. Empties the loading container and append a loading spinner in the data container.
+     * Then it calls getRandomRecipe() from the class Wrk.
+     */
     getRandomRecipe() {
+        $('#loadingContainer').empty();
         var loading = $('<div class="spinner-border text-danger" role="status"></div>');
         $('#loadingContainer').append(loading);
         wrk.getRandomRecipe(this.successRandomDish, this.errorRandomDish);
     }
 
+    /**
+     * Create a card with a random recipe from the API and displays it in the data container.
+     * It empties the dataContainer and the loadingContainer first to display the card.
+     * @param data : data of the random recipe
+     */
     successRandomDish(data) {
         $('#dataContainer').empty();
         $('#loadingContainer').empty();
@@ -142,26 +189,37 @@ class Ctrl {
     /*           ERRORS CALLBACKS          */
     /*=====================================*/
 
+    /**
+     * Displays an error message and empties the loading container
+     */
     errorUserDish() {
         $('#loadingContainer').empty();
-        alert("Error: couldn't retrieve the user dishes\n check your internet connection or try again later");
+        alert("Error: couldn't retrieve the user dishes. \nCheck your internet connection or try again later");
     }
 
+    /**
+     * Displays an error message and empties the loading container
+     */
     errorRandomDish() {
         $('#loadingContainer').empty();
-        alert("Error: couldn't retrieve the random dish\n check your internet connection or try again later");
+        alert("Error: couldn't retrieve the random dish. \nCheck your internet connection or try again later");
     }
+
+    /**
+     * Displays an error message.
+     */
     errorShowPosition() {
-        alert("Error:  couldn't get your location\n check your internet connection or try again later");
+        alert("Error:  couldn't get your location. \nCheck your internet connection or try again later");
 
     }
+
+    /**
+     * Displays an error message.
+     */
     errorSendDish() {
-        alert("Error: couldn't send your dish\n check your internet connection or try again later");
+        $('#loadingContainer').empty();
+        alert("Error: couldn't send your dish. \nCheck your internet connection or try again later");
 
     }
-
-
-
-
 
 }

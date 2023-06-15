@@ -1,5 +1,14 @@
 <?php
+/*
+ Author : Carlos Silva
+ Version : 1.0
+ Date : 16.06.2023
+ Purpose : Project A30's key retrieval in PHP
+*/
 
+/**
+ * Retrieves the API keys from the .apiKeys file and returns it.
+ */
 function retrieveApiKeys()
 {
     $path = __DIR__ . '/.apiKeys';
