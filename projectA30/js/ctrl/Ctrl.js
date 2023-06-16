@@ -122,7 +122,7 @@ class Ctrl {
     }
 
     /**
-     * Empty all the form fields.
+     * Empty all the fields from the form.
      */
     emptyFields() {
         $("#firstName").val("");

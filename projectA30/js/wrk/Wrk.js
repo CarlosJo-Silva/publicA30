@@ -15,7 +15,7 @@ $().ready(function () {
 
         /**
          * Retrieves the API keys. It does a GET request to the API.
-         * @param callback - The callback function that will be called when the API keys are retrieved.
+         * @param callback - The callback that will be called when the API keys are retrieved.
          */
         getApiKeys(callback) {
             $.ajax({
@@ -25,7 +25,7 @@ $().ready(function () {
                 success: function (data) {
                     callback(data);
                 },
-                error: function (error) {
+                error: function () {
                     alert("Error: Check your internet connection");
                     $('#loadingContainer').empty();
                 }
@@ -35,7 +35,7 @@ $().ready(function () {
         /**
          * Retrieves the user's location using his latitude and longitude. It does a GET request to the API.
          * @param position The user's position
-         * @param successCallback The callback function that will be called when the user's location is retrieved.
+         * @param successCallback The callback that will be called when the user's location is retrieved.
          * @param errorCallback The callback function that will be called when the user's location is not retrieved.
          */
         showPosition(position, successCallback, errorCallback) {
@@ -53,7 +53,7 @@ $().ready(function () {
         /**
          *  Process an image file in base64.
          * @param file The image file
-         * @param callback The callback function that will be called when the image is processed.s
+         * @param callback The callback that will be called when the image is processed.s
          */
         processImageIn64(file, callback) {
             var reader = new FileReader();
